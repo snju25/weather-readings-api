@@ -14,7 +14,7 @@ app.use(express.json())
 
 
 // Routes
-app.use("/",readingsRouter)
+app.use("/api/",readingsRouter)
 
 
 // handle errors raised by endpoints and respond with JSON error object.
