@@ -1,10 +1,14 @@
 import {Router } from "express"
-import { getAllReadings } from "../controllers/readings.js"
-import { getReadingsById } from "../controllers/readings.js"
+import { getAllReadings, getReadingsByPage,getReadingsById, createNewReading, deleteReadingById } from "../controllers/readings.js"
+
 
 const readingsRouter = Router()
 
-readingsRouter.get("/readings",getAllReadings)
-readingsRouter.get("/readings/:id",getReadingsById)
+readingsRouter.get("/",getAllReadings)
+readingsRouter.get("/:id",getReadingsById)
+readingsRouter.get("/page/:page",getReadingsByPage)
+readingsRouter.post("/",createNewReading)
+readingsRouter.delete("/",deleteReadingById)
+
 
 export default readingsRouter

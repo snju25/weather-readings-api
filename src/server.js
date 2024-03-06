@@ -1,6 +1,7 @@
 import express from "express"
 import readingsRouter from "./routes/readings.js"
-// import {db}  from "./database.js"
+import usersRouter from "./routes/users.js"
+
 
 
 // Express application instance
@@ -14,7 +15,8 @@ app.use(express.json())
 
 
 // Routes
-app.use("/api/",readingsRouter)
+app.use("/api/readings",readingsRouter)
+app.use("/api/users",usersRouter)
 
 
 // handle errors raised by endpoints and respond with JSON error object.

@@ -96,6 +96,22 @@ export async function createMany(readings) {
     return db.collection("readings").insertMany(readings)
 }
 
+/**
+ * Get paginated sightings 
+ *
+ * @export
+ * @async
+ * @param {*} page - the page number (1 indexed)
+ * @param {*} size - the number of documents per page
+ * @returns {Promise<Object[]>} - A promise for the array of sightings on the specified page
+ */
+export const getByPage = async(page, size) => {
+    // Calculate page offset
+    const offset = (page + 1) * size
+
+    return db.collection("readings").find().skip(offset).limit(size).toArray()
+}
+
 
 
 /**
@@ -114,7 +130,26 @@ export const getById = async(id) =>{
     }
 }
 
+
 /**
+ * Updates reading
+ * 
+ * @param {Object} reading 
+ * @returns 
+ */
+export const updateReadings = async (reading) =>{
+    const readingWithoutId = {...reading}
+    delete readingWithoutId._id
+
+    return db.collection("readings").replaceOne({_id: new ObjectId(reading._id)}, readingWithoutId)
+}
+
+
+
+
+
+/**
+ * Delete reading by ID
  * 
  * @param {string} id 
  * @returns {Promise<DeleteOneResult>}
@@ -125,9 +160,4 @@ export const  deleteByID = async (id) => {
 
 
 
-
-
-// export const update = async(readingID) =>{
-
-// }
 
