@@ -20,6 +20,7 @@ export const User = (
     firstName,
     lastName,
     role,
+    lastSession,
     authenticationKey
 ) => {
     return {
@@ -29,6 +30,7 @@ export const User = (
         firstName,
         lastName,
         role,
+        lastSession,
         authenticationKey
     }
 }

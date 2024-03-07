@@ -186,3 +186,43 @@ export const deleteManyByID = async (ids) => {
 
 
 
+
+/**
+ * Finds the max precipitation in a given sensor in last 5 months
+ * 
+ * @param {string} sensorName - The name of the sensor
+ * @returns {Promise<Object>} - An object containing the sensor name, reading date/time, and max precipitation value
+ */
+const findMaxPrecipitation = async (sensorName) => {
+    const fiveMonthsAgo = new Date();
+    fiveMonthsAgo.setMonth(fiveMonthsAgo.getMonth() - 5);
+  
+    return db.collection('sensorData').aggregate([
+      {
+        $match: {
+          device_name: sensorName,
+          time: { $gte: fiveMonthsAgo }
+        }
+      },
+      {
+        $group: {
+          _id: '$device_name',
+          maxPrecipitation: { $max: '$precipitation_mm_per_h' },
+          readingDate: { $first: '$time' }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          sensorName: '$_id',
+          readingDate: 1,
+          maxPrecipitation: 1
+        }
+      }
+    ]).toArray();
+  };
+  
+
+findMaxPrecipitation("Woodford_Sensor").then(res => console.log("hello" + res))
+
+
