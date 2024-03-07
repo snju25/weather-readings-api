@@ -261,7 +261,6 @@ export const findTARP = async(sensorName, rawDate) =>{
  * @returns {Promise<Object>} - An object containing the sensor name, reading date/time, and the temperature value.
  */
 export const findMaxTemperature = async (startDate, endDate) => {
-   
         const result = await db.collection("readings").aggregate([
             {
                 $match: {
@@ -271,23 +270,27 @@ export const findMaxTemperature = async (startDate, endDate) => {
                     }
                 }
             },
-            // get all results in descending order
-            { 
-                $sort: { temperature_deg_celsius: -1 } 
+            {
+                $group: {
+                    _id: "$device_name",
+                    maxTemperature: { $max: "$temperature_deg_celsius" },
+                    readingDate: { $first: "$time" } // Assumes the time is already sorted within each device.
+                }
             },
-            // only get the first result (the highest temperature)
-            { 
-                $limit: 1 
+            {
+                $project: {
+                    _id: 0,
+                    device_name: "$_id",
+                    maxTemperature: 1,
+                    readingDate: 1
+                }
             },
-
-            // show the device name and the max temperature of it
             { 
-                $project: { device_name: 1, maxTemperature: '$temperature_deg_celsius' } 
-            
+                $sort: { maxTemperature: -1 } 
             }
-            
         ]).toArray();
-
-        return result
+    
+        return result;
+    
 };
 // findMaxTemperature("2021-04-28T14:24:15.000+00:00","2021-05-07T02:04:07.000+00:00").then(res=> console.log(res))
