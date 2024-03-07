@@ -23,6 +23,7 @@ import { ObjectId } from 'mongodb';
  */
 export const readings = (
     _id,
+    latitude,
     device_name,
     precipitation_mm_per_h,
     time,
@@ -38,16 +39,17 @@ export const readings = (
     ) => {
         return {
             _id: new ObjectId(_id),
+            humidity: parseInt(humidity),
+            latitude: parseInt(latitude),
             device_name,
             precipitation_mm_per_h: parseInt(precipitation_mm_per_h),
             time: new Date(time),
-            longitude: parseInt(longitude),
-            temperature_deg_celsius: parseInt(temperature_deg_celsius),
             atmospheric_pressure_kPa: parseInt(atmospheric_pressure_kPa),
+            temperature_deg_celsius: parseInt(temperature_deg_celsius),
+            longitude: parseInt(longitude),
             max_wind_speed_m_per_s: parseInt(max_wind_speed_m_per_s),
             solar_radiation_W_per_m2: parseInt(solar_radiation_W_per_m2),
             vapor_pressure_kPa: parseInt(vapor_pressure_kPa),
-            humidity: parseInt(humidity),
             wind_direction_deg: parseInt(wind_direction_deg)
             
         }
