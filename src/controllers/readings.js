@@ -407,8 +407,19 @@ export const findTARP = async(req,res) =>{
     const device_name = req.params.device_name
     const rawDate = req.params.date
 
+    
+
     try{
         const result = await Readings.findTARP(device_name,rawDate)
+
+        if (result.length === 0) {
+            return res.status(404).json({ 
+                status: 404,
+                message: `No data found in the provided date range` 
+            });
+          }
+
+
         const {temperature_deg_celsius,atmospheric_pressure_kPa,solar_radiation_W_per_m2,precipitation_mm_per_h} = result[0]
         res.status(200).json({
             status: 200,
@@ -423,6 +434,38 @@ export const findTARP = async(req,res) =>{
         res.status(400).json({
             status: 400,
             message: `NO temperature, atmospheric pressure, radiation, and precipitation recorded by ${device_name} at ${rawDate}.`,
+        })
+    }
+
+}
+
+// Find the maximum temperature recorded across all stations for a given date/time range.
+
+export const findMaxTemperature = async(req,res) =>{
+    const startDate = req.query.startDate
+    const endDate = req.query.endDate
+
+
+
+    try{
+        const result = await Readings.findMaxTemperature(startDate,endDate)
+        console.log(result)
+        const {device_name, maxTemperature} = result[0]
+        if (result.length === 0) {
+            return res.status(404).json({ 
+                status: 404,
+                message: `No data found in the provided date range` 
+            });
+          }
+        res.status(200).json({
+            status:200,
+            message: "Max temperature between " + startDate + " and " + endDate,
+            result : {device_name, maxTemperature}
+        })
+    }catch(error){
+        res.status(400).json({
+            status: 400,
+            message: `No Data found`,
         })
     }
 

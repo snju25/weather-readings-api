@@ -234,7 +234,6 @@ export const findTARP = async(sensorName, rawDate) =>{
 
     // convert the provided date to a Date object so it can be used in the query
     const date = new Date(rawDate)
-    console.log(date)
 
     // query to get readings from a sensor on the provided date
     const result = await db.collection("readings").aggregate([
@@ -246,9 +245,49 @@ export const findTARP = async(sensorName, rawDate) =>{
         }
     ]).toArray();
 
+    // return null if no result found result.length > 0 ? result : null;
     return result
 }
 
 
 
 //    Find the maximum Temp(C) recorded for all stations for a given Date / Time range (start and finish date) returning the Sensor Name, reading date / time and the Temperature value: 
+
+/**
+ * Find the maximum temperature recorded across all stations for a given date/time range.
+ * 
+ * @param {Date} startDate - The start date of the range.
+ * @param {Date} endDate - The end date of the range.
+ * @returns {Promise<Object>} - An object containing the sensor name, reading date/time, and the temperature value.
+ */
+export const findMaxTemperature = async (startDate, endDate) => {
+   
+        const result = await db.collection("readings").aggregate([
+            {
+                $match: {
+                    time: { 
+                        $gte: new Date(startDate), 
+                        $lte: new Date(endDate)
+                    }
+                }
+            },
+            // get all results in descending order
+            { 
+                $sort: { temperature_deg_celsius: -1 } 
+            },
+            // only get the first result (the highest temperature)
+            { 
+                $limit: 1 
+            },
+
+            // show the device name and the max temperature of it
+            { 
+                $project: { device_name: 1, maxTemperature: '$temperature_deg_celsius' } 
+            
+            }
+            
+        ]).toArray();
+
+        return result
+};
+// findMaxTemperature("2021-04-28T14:24:15.000+00:00","2021-05-07T02:04:07.000+00:00").then(res=> console.log(res))
