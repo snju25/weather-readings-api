@@ -221,6 +221,34 @@ export const findMaxPrecipitation = async (sensorName) => {
 
   
 
-// findMaxPrecipitation("Test").then(res => console.log(res))
+// Find the temperature, atmospheric pressure, radiation, and precipitation recorded by a specific station at a given date and time. 
+
+/**
+ * Finds the temperature, atmospheric pressure, radiation, and precipitation recorded by a specific station at a given date and time.
+ * 
+ * @param {String} sensorName - Sensor Name 
+ * @param {String} rawDate - Given date and time 
+ * @returns an array of with reading
+ */
+export const findTARP = async(sensorName, rawDate) =>{
+
+    // convert the provided date to a Date object so it can be used in the query
+    const date = new Date(rawDate)
+    console.log(date)
+
+    // query to get readings from a sensor on the provided date
+    const result = await db.collection("readings").aggregate([
+        { 
+            $match: {
+                device_name: sensorName, 
+                time: { $eq: date } 
+                } 
+        }
+    ]).toArray();
+
+    return result
+}
 
 
+
+//    Find the maximum Temp(C) recorded for all stations for a given Date / Time range (start and finish date) returning the Sensor Name, reading date / time and the Temperature value: 

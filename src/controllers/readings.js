@@ -85,6 +85,16 @@ export const getReadingsByPage = async(req,res) =>{
 export const createNewReading = async(req,res) =>{
     const readingData = req.body
     const currentTime = new Date();
+
+    const authenticationKey = req.get("X-AUTH-KEY")
+    const currentUser = await Users.getByAuthenticationKey(authenticationKey)
+
+    if(currentUser.role !== "teacher"){
+        return res.status(400).json({
+            status: 200,
+            message: "Access Forbidden",
+        }); 
+    }
     
     const reading = Readings.readings(
         null,
@@ -121,6 +131,16 @@ export const createNewReading = async(req,res) =>{
 
 export const createMultipleReadings = async (req, res) => {
     const readingsData = req.body;
+
+    const authenticationKey = req.get("X-AUTH-KEY")
+    const currentUser = await Users.getByAuthenticationKey(authenticationKey)
+
+    if(currentUser.role !== "teacher"){
+        return res.status(400).json({
+            status: 200,
+            message: "Access Forbidden",
+        }); 
+    }
 
     // Validate that readingsData is an array
     if (!Array.isArray(readingsData)) {
@@ -182,7 +202,10 @@ export const patchReadingById = async (req, res) => {
     const currentUser = await Users.getByAuthenticationKey(authenticationKey)
 
     if(currentUser.role !== "teacher"){
-        return 
+        return res.status(400).json({
+            status: 200,
+            message: "Access Forbidden",
+        }); 
     }
 
     try {
@@ -220,11 +243,21 @@ export const patchMultipleReadings = async (req, res) => {
                message: "One of the reading id is incorrect please make sure all the ids are correct" 
             })
         }
+        const authenticationKey = req.get("X-AUTH-KEY")
+        const currentUser = await Users.getByAuthenticationKey(authenticationKey)
+
+        if(currentUser.role !== "teacher"){
+            return res.status(400).json({
+                status: 200,
+                message: "Access Forbidden",
+            }); 
+        }
         res.status(200).json({
             status: 200,
             message: "Readings updated successfully",
             results: updateResults,
         });
+
     } catch (err) {
         console.log(err);
         res.status(400).json({
@@ -362,4 +395,35 @@ export const maxPrecipitation = async (req,res) =>{
             message: error.message })
     }
     
+}
+
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+export const findTARP = async(req,res) =>{
+    const device_name = req.params.device_name
+    const rawDate = req.params.date
+
+    try{
+        const result = await Readings.findTARP(device_name,rawDate)
+        const {temperature_deg_celsius,atmospheric_pressure_kPa,solar_radiation_W_per_m2,precipitation_mm_per_h} = result[0]
+        res.status(200).json({
+            status: 200,
+            message: `the temperature, atmospheric pressure, radiation, and precipitation recorded by ${device_name} at ${rawDate}.`,
+            temperature_deg_celsius,
+            atmospheric_pressure_kPa,
+            solar_radiation_W_per_m2,
+            precipitation_mm_per_h
+        })
+
+    }catch(error){
+        res.status(400).json({
+            status: 400,
+            message: `NO temperature, atmospheric pressure, radiation, and precipitation recorded by ${device_name} at ${rawDate}.`,
+        })
+    }
+
 }
