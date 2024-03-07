@@ -198,7 +198,37 @@ export const patchReadingById = async (req, res) => {
 };
 
 
+/**
+ * Updates many reading at once
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+export const patchMultipleReadings = async (req, res) => {
+    const updates = req.body; // Assume the request body contains an array of updates
 
+    try {
+        const updateResults = await Readings.updateMultipleReadings(updates);
+        const invalidIDExist = updateResults.filter(result => result.matchedCount === 0)
+        if(invalidIDExist.length > 0) {
+            return res.status(404).json({
+               status: 404,
+               message: "One of the reading id is incorrect please make sure all the ids are correct" 
+            })
+        }
+        res.status(200).json({
+            status: 200,
+            message: "Readings updated successfully",
+            results: updateResults,
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            status: 400,
+            message: "Error updating readings",
+        });
+    }
+};
 
 
 /**

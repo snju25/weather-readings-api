@@ -142,7 +142,21 @@ export const updateReadings = async (id, updateFields) =>{
 };
 
 
-
+/**
+ * Updates multiple readings with different fields
+ * 
+ * @param {Array} updates - An array of objects, each containing a filter and the fields to update
+ * @returns {Promise<Array>} - A promise that resolves to an array of update results
+ */
+export const updateMultipleReadings = async (updates) => {
+    const results = [];
+    for (let i = 0; i < updates.length; i++) {
+        const update = updates[i];
+        const result = await db.collection("readings").updateOne({_id: new ObjectId(update.id)}, { $set: update.fields });
+        results.push(result);
+    }
+    return results;
+};
 
 
 /**
