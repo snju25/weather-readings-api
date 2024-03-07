@@ -39,17 +39,17 @@ export const readings = (
     ) => {
         return {
             _id: new ObjectId(_id),
-            humidity: parseInt(humidity),
             latitude: parseInt(latitude),
             device_name,
             precipitation_mm_per_h: parseInt(precipitation_mm_per_h),
             time: new Date(time),
-            atmospheric_pressure_kPa: parseInt(atmospheric_pressure_kPa),
-            temperature_deg_celsius: parseInt(temperature_deg_celsius),
             longitude: parseInt(longitude),
+            temperature_deg_celsius: parseInt(temperature_deg_celsius),
+            atmospheric_pressure_kPa: parseInt(atmospheric_pressure_kPa),
             max_wind_speed_m_per_s: parseInt(max_wind_speed_m_per_s),
             solar_radiation_W_per_m2: parseInt(solar_radiation_W_per_m2),
             vapor_pressure_kPa: parseInt(vapor_pressure_kPa),
+            humidity: parseInt(humidity),
             wind_direction_deg: parseInt(wind_direction_deg)
             
         }
@@ -193,36 +193,34 @@ export const deleteManyByID = async (ids) => {
  * @param {string} sensorName - The name of the sensor
  * @returns {Promise<Object>} - An object containing the sensor name, reading date/time, and max precipitation value
  */
-const findMaxPrecipitation = async (sensorName) => {
+export const findMaxPrecipitation = async (sensorName) => {
+
+    // Get the date 5 months ago
     const fiveMonthsAgo = new Date();
     fiveMonthsAgo.setMonth(fiveMonthsAgo.getMonth() - 5);
+
+    const result = await db.collection("readings").aggregate([
+        { 
+            $match: {
+                device_name: sensorName, 
+                time: { $gte: fiveMonthsAgo }
+            }
+        },
+        { 
+            $group: {
+                _id: "$device_name", 
+                maxPrecipitation: { $max: "$precipitation_mm_per_h" },
+                time: { $last: "$time" }
+            }
+        },
+    ]).toArray()
+    return result
   
-    return db.collection('sensorData').aggregate([
-      {
-        $match: {
-          device_name: sensorName,
-          time: { $gte: fiveMonthsAgo }
-        }
-      },
-      {
-        $group: {
-          _id: '$device_name',
-          maxPrecipitation: { $max: '$precipitation_mm_per_h' },
-          readingDate: { $first: '$time' }
-        }
-      },
-      {
-        $project: {
-          _id: 0,
-          sensorName: '$_id',
-          readingDate: 1,
-          maxPrecipitation: 1
-        }
-      }
-    ]).toArray();
-  };
+};
+
+
   
 
-findMaxPrecipitation("Woodford_Sensor").then(res => console.log("hello" + res))
+// findMaxPrecipitation("Test").then(res => console.log(res))
 
 

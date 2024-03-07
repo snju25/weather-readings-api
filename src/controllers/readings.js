@@ -84,12 +84,14 @@ export const getReadingsByPage = async(req,res) =>{
  */
 export const createNewReading = async(req,res) =>{
     const readingData = req.body
+    const currentTime = new Date();
     
     const reading = Readings.readings(
         null,
+        readingData.latitude,
         readingData.device_name,
         readingData.precipitation_mm_per_h,
-        readingData.time,
+        currentTime.toISOString(),
         readingData.longitude,
         readingData.temperature_deg_celsius,
         readingData.atmospheric_pressure_kPa,
@@ -127,22 +129,24 @@ export const createMultipleReadings = async (req, res) => {
             message: "Invalid input: Expected an array of readings.",
         });
     }
+    const currentTime = new Date();
 
     // Map each reading data to a Reading instance
     const readings = readingsData.map(readingData => 
          Readings.readings(
             null,
+            readingData.latitude,
             readingData.device_name,
             readingData.precipitation_mm_per_h,
-            readingData.time,
+            currentTime.toISOString(),
             readingData.longitude,
             readingData.temperature_deg_celsius,
             readingData.atmospheric_pressure_kPa,
             readingData.max_wind_speed_m_per_s,
-            readingData.solar_radiation_W_per_m2,
+            readingData.solar_radiation_W_per_m2 ,
             readingData.vapor_pressure_kPa,
             readingData.humidity,
-            readingData.wind_direction_deg
+            readingData.wind_direction_deg 
         )
     );
 
@@ -318,3 +322,44 @@ export const deleteMultipleReadingsById = async (req, res) => {
 
  
 };
+
+
+
+
+// find the maximum precipitation recorded in the last 5 months for a specific sensor
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+export const maxPrecipitation = async (req,res) =>{
+    const sensorName = req.params.device_name
+
+
+    try{
+        const result = await Readings.findMaxPrecipitation(sensorName)
+        if (result.length === 0) {
+            return res.status(404).json({ 
+                status: 404,
+                message: `No data found for '${sensorName}' in the last 5 months` });
+          }
+            // get the max precipitation and the time from the first result
+        const { maxPrecipitation, time } = result[0];
+    
+        res.status(200).json({ 
+            status: 200,
+            sensorName, 
+            maxPrecipitation, 
+            time 
+        });
+
+    }catch(error){
+        console.log(error.message);
+        res.status(500).json({ 
+            status: 500,
+            message: error.message })
+    }
+    
+}

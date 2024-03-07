@@ -1,5 +1,5 @@
 import {Router } from "express"
-import { getAllReadings, getReadingsByPage,getReadingsById, createNewReading, deleteReadingById,createMultipleReadings, deleteMultipleReadingsById, patchReadingById, patchMultipleReadings } from "../controllers/readings.js"
+import { getAllReadings, getReadingsByPage,getReadingsById, createNewReading, deleteReadingById,createMultipleReadings, deleteMultipleReadingsById, patchReadingById, patchMultipleReadings, maxPrecipitation } from "../controllers/readings.js"
 import auth from "../middleware/auth.js"
 
 
@@ -11,6 +11,8 @@ const readingsRouter = Router()
 readingsRouter.get("/",getAllReadings)
 
 readingsRouter.get("/:id",getReadingsById)
+
+readingsRouter.get("/:device_name/max_precipitation", maxPrecipitation)
 
 readingsRouter.get("/page/:page",getReadingsByPage)
 
