@@ -163,9 +163,42 @@ export const createMultipleReadings = async (req, res) => {
 };
 
 
+/**
+ * Updates a reading with specified fields
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+export const patchReadingById = async (req, res) => {
+    const readingId = req.params.id;
+    const updateFields = req.body;
+
+    const authenticationKey = req.get("X-AUTH-KEY")
+    const currentUser = await Users.getByAuthenticationKey(authenticationKey)
+
+    if(currentUser.role !== "teacher"){
+        return 
+    }
+
+    try {
+        const updateResult = await Readings.updateReadings(readingId, updateFields);
+        res.status(200).json({
+            status: 200,
+            message: "Reading updated successfully",
+            updateResult: updateResult
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(404).json({
+            status: 404,
+            message: `Reading with ID ${readingId} not found`,
+        });
+    }
+};
 
 
-// Update a reading
+
 
 
 /**

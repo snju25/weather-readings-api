@@ -137,12 +137,9 @@ export const getById = async(id) =>{
  * @param {Object} reading 
  * @returns 
  */
-export const updateReadings = async (reading) =>{
-    const readingWithoutId = {...reading}
-    delete readingWithoutId._id
-
-    return db.collection("readings").replaceOne({_id: new ObjectId(reading._id)}, readingWithoutId)
-}
+export const updateReadings = async (id, updateFields) =>{
+    return db.collection("readings").updateOne({_id: new ObjectId(id)}, {$set : updateFields });
+};
 
 
 
