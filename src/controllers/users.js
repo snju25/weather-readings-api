@@ -50,5 +50,33 @@ export const createUser = async (req,res) =>{
 
 // PATCH /users/
 
-// DELETE /users/:id
 
+/**
+ * Only teacher can delete reading By ID
+ * 
+ * @param {Request} req - express request Object
+ * @param {Response} res - express response Object
+ * @returns 
+ */
+export const deleteUserById = async (req,res) =>{
+    const userID = req.params.id
+    const authenticationKey = req.get("X-AUTH-KEY")
+
+    const currentUser = await Users.getByAuthenticationKey(authenticationKey)
+
+    if(currentUser.role !== "teacher"){
+        return 
+    }
+ 
+    Users.deleteById(userID).then(user => 
+        res.status(200).json({
+            status: 200,
+            message: "User deleted",
+            user: user
+        }))
+        .catch(err => res.status(404).json({
+            status: 404,
+            message: "User not found with ID " + userID,
+        }))
+
+}

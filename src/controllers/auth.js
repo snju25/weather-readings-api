@@ -16,7 +16,7 @@ export const loginUser = async(req,res)=>{
     if(user){
         if(bcrypt.compareSync(loginData.password, user.password)){
             // generate the API KEy for user
-            user.authentication = uuid4().toString()
+            user.authenticationKey =  uuid4().toString()
             const authenticationUser = await Users.update(user)
 
             res.status(200).json({

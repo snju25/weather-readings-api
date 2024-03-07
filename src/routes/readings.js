@@ -1,5 +1,5 @@
 import {Router } from "express"
-import { getAllReadings, getReadingsByPage,getReadingsById, createNewReading, deleteReadingById } from "../controllers/readings.js"
+import { getAllReadings, getReadingsByPage,getReadingsById, createNewReading, deleteReadingById,createMultipleReadings, deleteMultipleReadingsById } from "../controllers/readings.js"
 import auth from "../middleware/auth.js"
 
 
@@ -16,7 +16,10 @@ readingsRouter.get("/page/:page",getReadingsByPage)
 
 readingsRouter.post("/",auth(["teacher"]),createNewReading)
 
+readingsRouter.post("/multiple", createMultipleReadings)
+
 readingsRouter.delete("/:id", auth(["teacher"]),deleteReadingById)
 
+readingsRouter.delete("/delete/multiple", auth(["teacher"]),deleteMultipleReadingsById)
 
 export default readingsRouter

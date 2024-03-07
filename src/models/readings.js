@@ -159,5 +159,17 @@ export const  deleteByID = async (id) => {
 }
 
 
+/**
+ * Delete multiple readings by their IDs
+ * 
+ * @param {string[]} ids - Array of reading IDs
+ * @returns {Promise<DeleteResult>}
+ */
+export const deleteManyByID = async (ids) => {
+    const objectIds = ids.map(id => new ObjectId(id)); // Convert each id to an ObjectId
+    console.log(objectIds)
+    return db.collection("readings").deleteMany({ _id: { $in: objectIds } });
+};
+
 
 

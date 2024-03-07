@@ -1,9 +1,11 @@
 import {Router} from "express"
-import { createUser } from "../controllers/users.js"
+import { createUser,deleteUserById } from "../controllers/users.js"
 
 const usersRouter = Router()
 
 usersRouter.post("/",createUser)
+
+usersRouter.delete("/:id",deleteUserById)
 
 export default usersRouter
 
