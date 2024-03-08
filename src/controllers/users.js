@@ -23,6 +23,8 @@ export const createUser = async (req,res) =>{
 
     // hash the password(if not already hashed)
 
+    const currentTime = new Date();
+
     if(!userData.password.startsWith("$2a")){
         userData.password = bcrypt.hashSync(userData.password)
     }
@@ -34,6 +36,8 @@ export const createUser = async (req,res) =>{
         userData.firstName,
         userData.lastName,
         userData.role,
+        null,
+        currentTime.toISOString(),
         null
     )
 
@@ -79,4 +83,24 @@ export const deleteUserById = async (req,res) =>{
             message: "User not found with ID " + userID,
         }))
 
+}
+
+// delete multiple users with role as student from range start to end
+export const deleteMultipleUserInRange = async(req,res)=>{
+
+    const {startDate,endDate} = req.body
+
+    try{
+        const result = await Users.deleteUserWithinRange(startDate,endDate)
+        res.status(200).json({
+            status: 200,
+            message:"Deleted Students who logged in between " + startDate + " " + endDate 
+        })
+    }catch(error){
+        res.status(400).json({
+            status: 400,
+            message: "No users found in that range"
+        })
+
+    }
 }

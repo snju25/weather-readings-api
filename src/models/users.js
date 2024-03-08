@@ -21,6 +21,7 @@ export const User = (
     lastName,
     role,
     lastSession,
+    registrationDate,
     authenticationKey
 ) => {
     return {
@@ -30,7 +31,8 @@ export const User = (
         firstName,
         lastName,
         role,
-        lastSession,
+        lastSession: new Date(lastSession),
+        registrationDate: new Date(registrationDate),
         authenticationKey
     }
 }
@@ -159,3 +161,33 @@ export const getAll = async() => {
 
 
 
+// Delete multiple users that have the ‘Student’ role and last logged in between two given dates: 
+    // Allow Administrators to remove a range of created user accounts based on a date range. 
+
+    export const deleteUserWithinRange = async (rawStartDate, rawEndDate) => {
+        const startDate = new Date(rawStartDate);
+        const endDate = new Date(rawEndDate);
+    
+        // Retrieve students who logged in within the given date range
+        const students = await db.collection("users").find({
+            lastSession: { $gte: startDate, $lte: endDate },
+            role: { $regex: new RegExp("^student$", "i") } // Case-insensitive match for 'student'
+        }, { _id: 1 }).toArray();
+    
+        if (students.length > 0) {
+            const result = await db.collection("users").deleteMany({
+                _id: { $in: students.map(student => student._id) }
+            });
+            return result;
+        } else {
+            throw new Error("No students found within that range");
+        }
+    };
+    
+    
+    
+// deleteUserWithinRange("2021-03-01", "2024-03-10").then(res => console.log(res));
+    
+    
+    //Update access level for at least two users in the same query, based on a date range in which the users were created: 
+    //To Allow Administrators to upgrade or downgrade multiple users that were created in batches (upgrading or downgrading an entire group of students) 

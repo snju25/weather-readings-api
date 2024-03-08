@@ -17,7 +17,9 @@ export const loginUser = async(req,res)=>{
         if(bcrypt.compareSync(loginData.password, user.password)){
             // generate the API KEy for user
             user.authenticationKey =  uuid4().toString()
-            const authenticationUser = await Users.update(user)
+            const currentTime = new Date();
+            user.lastSession = new Date(currentTime.toISOString())
+            const updatedUser = await Users.update(user)
 
             res.status(200).json({
                 status: 200,
@@ -91,7 +93,7 @@ export const registerUser = async(req,res) =>{
     }
     // hash the password 
     userData.password = bcrypt.hashSync(userData.password);
-
+    const currentTime = new Date();
      // Convert the user data into an User model object
      const user = Users.User(
         null,
@@ -100,6 +102,8 @@ export const registerUser = async(req,res) =>{
         userData.firstName,
         userData.lastName,
         "student",
+        null,
+        currentTime.toISOString(),
         null
     )
      // Use the create model function to insert this user into the DB
