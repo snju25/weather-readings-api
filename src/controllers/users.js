@@ -1,11 +1,6 @@
 import * as Users from "../models/users.js";
 import bcrypt from "bcryptjs";
 
-// GET user by id /users/:id
-
-// GET /users/key/:authenticationKey
-
-// POST /users/
 
 export const createUser = async (req, res) => {
   const userData = req.body;
@@ -20,10 +15,9 @@ export const createUser = async (req, res) => {
     });
     return;
   }
-
-  // hash the password(if not already hashed)
-
+ 
   const currentTime = new Date();
+  // hash the password(if not already hashed)
 
   if (!userData.password.startsWith("$2a")) {
     userData.password = bcrypt.hashSync(userData.password);
