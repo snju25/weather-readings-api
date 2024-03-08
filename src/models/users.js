@@ -194,14 +194,23 @@ export const deleteUserWithinRange = async (rawStartDate, rawEndDate) => {
 export const changeUserRoles = async(startDate, endDate, newRole) =>{
 
 
-    const accounts = await db.collection("users").aggregate([
-    { $match: { registrationDate: { $gte: new Date(startDate), $lt: new Date(endDate) } } },
-    { $project: { _id: 1 } }
-    ]).toArray();
+    const accounts = await db.collection("users").find(
+        {
+            registrationDate: { $gte: new Date(startDate), $lt: new Date(endDate) }
+        },
+        { 
+         projection : { 
+                _id: 1,
+                role: 1
+             }
+        }
+        
+        ).toArray();
 
-    const result = await db.collection("users").updateMany(
-        { _id: { $in: accounts.map(account => account._id) } },
-        { $set: { role: newRole } }
-    );    
+
+
+
+    const result = await db.collection("users").updateMany({_id:{ $in: accounts.map(account => account._id) }}, {$set: {role: newRole}})
     return result
 }
+

@@ -245,7 +245,6 @@ export const findTARP = async(sensorName, rawDate) =>{
         }
     ]).toArray();
 
-    // return null if no result found result.length > 0 ? result : null;
     return result
 }
 
@@ -274,7 +273,7 @@ export const findMaxTemperature = async (startDate, endDate) => {
                 $group: {
                     _id: "$device_name",
                     maxTemperature: { $max: "$temperature_deg_celsius" },
-                    readingDate: { $first: "$time" } // Assumes the time is already sorted within each device.
+                    readingDate: { $first: "$time" }
                 }
             },
             {
@@ -293,4 +292,3 @@ export const findMaxTemperature = async (startDate, endDate) => {
         return result;
     
 };
-// findMaxTemperature("2021-04-28T14:24:15.000+00:00","2021-05-07T02:04:07.000+00:00").then(res=> console.log(res))

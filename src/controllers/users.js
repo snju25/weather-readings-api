@@ -148,6 +148,7 @@ export const changeUserRoles = async (req, res) => {
 
   try{
     const result = await Users.changeUserRoles(startDate,endDate,newRole)
+    console.log(result)
     if(result.modifiedCount === 0){
         return res.status(400).json({
             status: 400,
@@ -159,6 +160,7 @@ export const changeUserRoles = async (req, res) => {
         message: `${result.modifiedCount} were been modified to the new Role as ${newRole} `
     })
   }catch (error){
+    console.log(error)
     res.status(400).json({
         status: 400,
         message: error
