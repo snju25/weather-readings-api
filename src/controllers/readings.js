@@ -88,7 +88,6 @@ export const createNewReading = async(req,res) =>{
 
     const authenticationKey = req.get("X-AUTH-KEY")
     const currentUser = await Users.getByAuthenticationKey(authenticationKey)
-
     if(currentUser.role !== "teacher"){
         return res.status(400).json({
             status: 200,
@@ -141,7 +140,6 @@ export const createMultipleReadings = async (req, res) => {
             message: "Access Forbidden",
         }); 
     }
-
     // Validate that readingsData is an array
     if (!Array.isArray(readingsData)) {
         return res.status(400).json({

@@ -87,8 +87,18 @@ export const deleteUserById = async (req,res) =>{
 
 // delete multiple users with role as student from range start to end
 export const deleteMultipleUserInRange = async(req,res)=>{
-
     const {startDate,endDate} = req.body
+
+    const authenticationKey = req.get("X-AUTH-KEY")
+    const currentUser = await Users.getByAuthenticationKey(authenticationKey)
+    console.log(currentUser)
+
+    if(currentUser.role !== "teacher"){
+        return res.status(400).json({
+            status: 200,
+            message: "Access Forbidden",
+        }); 
+    }
 
     try{
         const result = await Users.deleteUserWithinRange(startDate,endDate)

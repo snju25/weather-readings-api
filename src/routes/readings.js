@@ -22,7 +22,7 @@ readingsRouter.get("/page/:page",getReadingsByPage)
 
 readingsRouter.post("/",auth(["teacher"]),createNewReading)
 
-readingsRouter.post("/multiple", createMultipleReadings)
+readingsRouter.post("/multiple",auth(["teacher"]), createMultipleReadings)
 
 readingsRouter.delete("/:id", auth(["teacher"]),deleteReadingById)
 
@@ -30,6 +30,6 @@ readingsRouter.delete("/delete/multiple", auth(["teacher"]),deleteMultipleReadin
 
 readingsRouter.patch("/:id", auth(["teacher"]), patchReadingById)
 
-readingsRouter.patch("/update/many", patchMultipleReadings)
+readingsRouter.patch("/update/many",auth(["teacher"]), patchMultipleReadings)
 
 export default readingsRouter
