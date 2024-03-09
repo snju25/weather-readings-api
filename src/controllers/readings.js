@@ -300,24 +300,19 @@ export const deleteReadingById = async (req,res) =>{
             message: "Invalid reading ID format.",
         });
     }
-    try{
+   
         const deleteReadings = await Readings.deleteByID(readingID)
-
+        if(deleteReadings.deletedCount === 0){
+            return res.status(404).json({
+                status: 404,
+                message: "Readings with Id "+ readingID + " not found",
+            })
+        }
         res.status(200).json({
             status: 200,
             message: "Readings deleted",
             reading: deleteReadings
         })
-
-    }catch(err){
-        console.log(err)
-        res.status(404).json({
-            status: 404,
-            message: "Readings with Id "+ readingID + " not found",
-        })
-
-    }
-   
 }
 
 /**

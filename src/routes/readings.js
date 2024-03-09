@@ -28,7 +28,7 @@ readingsRouter.delete("/:id", auth(["teacher"]),deleteReadingById)
 
 readingsRouter.delete("/delete/multiple", auth(["teacher"]),deleteMultipleReadingsById)
 
-readingsRouter.patch("/:id", auth(["teacher"]), patchReadingById)
+readingsRouter.put("/:id", auth(["teacher"]), patchReadingById)
 
 readingsRouter.patch("/update/many",auth(["teacher"]), patchMultipleReadings)
 
