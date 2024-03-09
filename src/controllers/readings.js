@@ -200,8 +200,8 @@ export const patchReadingById = async (req, res) => {
     const currentUser = await Users.getByAuthenticationKey(authenticationKey)
 
     if(currentUser.role !== "teacher"){
-        return res.status(400).json({
-            status: 200,
+        return res.status(403).json({
+            status: 403,
             message: "Access Forbidden",
         }); 
     }

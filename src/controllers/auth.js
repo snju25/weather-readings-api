@@ -53,6 +53,14 @@ export const loginUser = async(req,res)=>{
  */
 export const logoutUser = async (req,res)=>{
     const authenticationKey = req.body.authenticationKey
+
+    // check if the authenticationKey doesn't exist
+    if(!authenticationKey){
+        return res.status(400).json({
+            status: 400,
+            message: "Missing Auth Key, can not logout"
+        })
+    }
     try{
         const userToLogout =  await Users.getByAuthenticationKey(authenticationKey)
         userToLogout.authenticationKey = null
