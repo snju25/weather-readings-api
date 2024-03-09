@@ -25,13 +25,13 @@ export const User = (
     authenticationKey
 ) => {
     return {
-        _id,
+        _id: new ObjectId(_id),
         email,
         password,
         firstName,
         lastName,
         role,
-        lastSession: new Date(lastSession),
+        lastSession: lastSession ? new Date(lastSession) : null,
         registrationDate: new Date(registrationDate),
         authenticationKey
     }

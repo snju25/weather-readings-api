@@ -8,7 +8,7 @@ usersRouter.post("/",createUser)
 
 usersRouter.delete("/:id",auth(["teacher"]),deleteUserById)
 
-usersRouter.post("/deleteMultipleStudents/",auth(["teacher"]),deleteMultipleUserInRange)
+usersRouter.delete("/delete/multipleStudents",auth(["teacher"]),deleteMultipleUserInRange)
 
 usersRouter.patch("/update/roles",auth(["teacher","admin"]),changeUserRoles)
 

@@ -39,8 +39,8 @@ export const getReadingsById = async (req,res) =>{
         })
     }
     catch(err) {
-        res.status(500).json({
-            status: 500,
+        res.status(404).json({
+            status: 404,
             message: "Failed to get an ID with " + readingID
         })
 
@@ -59,20 +59,20 @@ export const getReadingsById = async (req,res) =>{
 export const getReadingsByPage = async(req,res) =>{
     const pageSize = 5;
     const page = parseInt(req.params.page)
-    try{
-        const readings = await Readings.getByPage(page,pageSize)
-        res.status(200).json({
-            status: 200,
-            message: "Get readings by page number",
-            readings: readings
+    
+    const readings = await Readings.getByPage(page,pageSize)
+    if(readings.length === 0){
+        return res.status(404).json({
+            status: 404,
+            message: "No readings found for page number " + page + " please try a different page number" 
         })
     }
-    catch(err){
-        res.status(500).json({
-            status: 500,
-            message: "Get readings by page number not found",
-        })
-    }
+    res.status(200).json({
+        status: 200,
+        message: "Get readings by page number",
+        readings: readings
+    })
+   
 }
 
 
@@ -89,8 +89,8 @@ export const createNewReading = async(req,res) =>{
     const authenticationKey = req.get("X-AUTH-KEY")
     const currentUser = await Users.getByAuthenticationKey(authenticationKey)
     if(currentUser.role !== "teacher"){
-        return res.status(400).json({
-            status: 200,
+        return res.status(403).json({
+            status: 403,
             message: "Access Forbidden",
         }); 
     }
@@ -113,8 +113,8 @@ export const createNewReading = async(req,res) =>{
 
    
     Readings.create(reading).then(reading => {
-        res.status(200).json({
-            status: 200,
+        res.status(201).json({
+            status: 201,
             message: "Reading Created",
             reading: reading
         })
@@ -135,8 +135,8 @@ export const createMultipleReadings = async (req, res) => {
     const currentUser = await Users.getByAuthenticationKey(authenticationKey)
 
     if(currentUser.role !== "teacher"){
-        return res.status(400).json({
-            status: 200,
+        return res.status(403).json({
+            status: 403,
             message: "Access Forbidden",
         }); 
     }
@@ -170,8 +170,8 @@ export const createMultipleReadings = async (req, res) => {
 
     // Create multiple readings in the database
     Readings.createMany(readings).then(createdReadings => {
-        res.status(200).json({
-            status: 200,
+        res.status(201).json({
+            status: 201,
             message: "Readings created",
             readings: createdReadings
         });
@@ -205,6 +205,13 @@ export const patchReadingById = async (req, res) => {
             message: "Access Forbidden",
         }); 
     }
+       // Validate the readingID is a valid 24 character hex string
+       if (!ObjectId.isValid(readingId)) {
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid reading ID format.",
+        });
+    }
 
     try {
         const updateResult = await Readings.updateReadings(readingId, updateFields);
@@ -232,6 +239,16 @@ export const patchReadingById = async (req, res) => {
 export const patchMultipleReadings = async (req, res) => {
     const updates = req.body; // Assume the request body contains an array of updates
 
+    const authenticationKey = req.get("X-AUTH-KEY")
+    const currentUser = await Users.getByAuthenticationKey(authenticationKey)
+
+    if(currentUser.role !== "teacher"){
+        return res.status(403).json({
+            status: 403,
+            message: "Access Forbidden",
+        }); 
+    }
+
     try {
         const updateResults = await Readings.updateMultipleReadings(updates);
         const invalidIDExist = updateResults.filter(result => result.matchedCount === 0)
@@ -240,15 +257,6 @@ export const patchMultipleReadings = async (req, res) => {
                status: 404,
                message: "One of the reading id is incorrect please make sure all the ids are correct" 
             })
-        }
-        const authenticationKey = req.get("X-AUTH-KEY")
-        const currentUser = await Users.getByAuthenticationKey(authenticationKey)
-
-        if(currentUser.role !== "teacher"){
-            return res.status(400).json({
-                status: 200,
-                message: "Access Forbidden",
-            }); 
         }
         res.status(200).json({
             status: 200,
@@ -280,7 +288,10 @@ export const deleteReadingById = async (req,res) =>{
     const currentUser = await Users.getByAuthenticationKey(authenticationKey)
 
     if(currentUser.role !== "teacher"){
-        return 
+        return res.status(403).json({
+            status: 403,
+            message: "Access Forbidden",
+        }); 
     }
       // Validate the readingID is a valid 24 character hex string
       if (!ObjectId.isValid(readingID)) {
@@ -349,6 +360,7 @@ export const deleteMultipleReadingsById = async (req, res) => {
     res.status(200).json({
         status: 200,
         message: "Readings deleted successfully",
+        deleteResult
     });
 
  
@@ -413,7 +425,7 @@ export const findTARP = async(req,res) =>{
         if (result.length === 0) {
             return res.status(404).json({ 
                 status: 404,
-                message: `No data found in the provided date range` 
+                message: `No data found in the provided date range or please check if the Sensor name is correct` 
             });
           }
 
@@ -443,6 +455,16 @@ export const findTARP = async(req,res) =>{
 export const findMaxTemperature = async(req,res) =>{
     const startDate = req.query.startDate
     const endDate = req.query.endDate
+
+    // do some validation
+    if (!startDate) {
+        return res.status(400).json({ message: `startDate is required` });
+    }
+
+    if (!endDate) {
+        return res.status(400).json({ message: `endDate is required` });
+    }
+    
 
     try{
         const result = await Readings.findMaxTemperature(startDate,endDate)

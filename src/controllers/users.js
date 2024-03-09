@@ -39,8 +39,8 @@ export const createUser = async (req, res) => {
 
   const userCreated = await Users.create(user);
 
-  res.status(200).json({
-    status: 200,
+  res.status(201).json({
+    status: 201,
     message: "User created",
     user: userCreated,
   });
@@ -104,8 +104,8 @@ export const deleteMultipleUserInRange = async (req, res) => {
         "Deleted Students who logged in between " + startDate + " " + endDate,
     });
   } catch (error) {
-    res.status(400).json({
-      status: 400,
+    res.status(404).json({
+      status: 404,
       message: "No users found in that range",
     });
   }

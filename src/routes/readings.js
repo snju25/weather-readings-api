@@ -12,9 +12,9 @@ readingsRouter.get("/",getAllReadings)
 
 readingsRouter.get("/:id",getReadingsById)
 
-readingsRouter.get("/:device_name/max_precipitation", maxPrecipitation)
+readingsRouter.get("/max_precipitation/:device_name/", maxPrecipitation)
 
-readingsRouter.get("/:device_name/:date", findTARP)
+readingsRouter.get("/TARP/:device_name/:date", findTARP)
 
 readingsRouter.get("/temperature/max/range", findMaxTemperature)
 
