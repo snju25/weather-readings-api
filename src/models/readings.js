@@ -292,3 +292,10 @@ export const findMaxTemperature = async (startDate, endDate) => {
         return result;
     
 };
+
+// to update the precipitation value of a specific document
+
+export const updatePrecipitation = async(id,NewPrecipitation) =>{
+    return db.collection("readings").updateOne({_id: new ObjectId(id)},{$set : {precipitation_mm_per_h: NewPrecipitation}})
+}
+

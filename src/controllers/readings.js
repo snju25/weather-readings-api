@@ -482,3 +482,36 @@ export const findMaxTemperature = async(req,res) =>{
     }
 
 }
+
+// // to update the precipitation value of a specific document
+
+export const updatePrecipitation = async(req,res)=>{
+    const {id, newPrecipitation } = req.body
+  
+    const authenticationKey = req.get("X-AUTH-KEY");
+    const currentUser = await Users.getByAuthenticationKey(authenticationKey);
+  
+    if (currentUser.role !== "admin") {
+      return res.status(401).json({
+        status: 401,
+        message: "You are not authorised to access this content",
+      });
+    }
+
+    const isReadingValid = await Readings.getById(id)
+    if(!isReadingValid){
+        return res.status(404).json({
+            status: 404,
+            message: "Could not find any ID",
+        })
+    }
+
+    const result = await Readings.updatePrecipitation(id,newPrecipitation)
+    res.status(200).json({
+        status: 200,
+        message: "Updated precipitation"
+    })
+  
+  
+  
+  }

@@ -1,5 +1,5 @@
 import {Router } from "express"
-import { getAllReadings, getReadingsByPage,getReadingsById, createNewReading, deleteReadingById,createMultipleReadings, deleteMultipleReadingsById, patchReadingById, patchMultipleReadings, maxPrecipitation, findTARP, findMaxTemperature } from "../controllers/readings.js"
+import { getAllReadings, getReadingsByPage,getReadingsById, createNewReading, deleteReadingById,createMultipleReadings, deleteMultipleReadingsById, patchReadingById, patchMultipleReadings, maxPrecipitation, findTARP, findMaxTemperature, updatePrecipitation } from "../controllers/readings.js"
 import auth from "../middleware/auth.js"
 
 
@@ -31,5 +31,7 @@ readingsRouter.delete("/delete/multiple", auth(["teacher"]),deleteMultipleReadin
 readingsRouter.put("/:id", auth(["teacher"]), patchReadingById)
 
 readingsRouter.patch("/update/many",auth(["teacher"]), patchMultipleReadings)
+
+readingsRouter.patch("/update/precipitation",auth(["teacher","admin"]), updatePrecipitation)
 
 export default readingsRouter
