@@ -192,11 +192,10 @@ export const deleteUserWithinRange = async (rawStartDate, rawEndDate) => {
     //Update access level for at least two users in the same query, based on a date range in which the users were created: 
     //To Allow Administrators to upgrade or downgrade multiple users that were created in batches (upgrading or downgrading an entire group of students) 
 export const changeUserRoles = async(startDate, endDate, newRole) =>{
-
-
     const accounts = await db.collection("users").find(
         {
-            registrationDate: { $gte: new Date(startDate), $lt: new Date(endDate) }
+            registrationDate: { $gte: new Date(startDate), $lt: new Date(endDate) },
+            role: "student"
         },
         { 
          projection : { 
