@@ -491,7 +491,7 @@ export const updatePrecipitation = async(req,res)=>{
     const authenticationKey = req.get("X-AUTH-KEY");
     const currentUser = await Users.getByAuthenticationKey(authenticationKey);
   
-    if (currentUser.role !== "admin") {
+    if (currentUser.role !== "teacher") {
       return res.status(401).json({
         status: 401,
         message: "You are not authorised to access this content",

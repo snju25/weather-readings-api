@@ -123,7 +123,7 @@ export const changeUserRoles = async (req, res) => {
       message: "You are not authorised to access this content",
     });
   }
-  const validRoles = ["admin", "teacher", "student"];
+  const validRoles = ["sensor", "teacher", "student"];
 
   // do some validation
   if (!startDate) {
@@ -142,7 +142,7 @@ export const changeUserRoles = async (req, res) => {
     return res
       .status(400)
       .json({
-        message: "Invalid Role! Role must be admin, teacher, or student",
+        message: "Invalid Role! Role must be Teachers, teacher, or student",
       });
   }
 

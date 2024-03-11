@@ -20,9 +20,9 @@ readingsRouter.get("/temperature/max/range", findMaxTemperature)
 
 readingsRouter.get("/page/:page",getReadingsByPage)
 
-readingsRouter.post("/",auth(["teacher"]),createNewReading)
+readingsRouter.post("/",auth(["teacher","sensor"]),createNewReading)
 
-readingsRouter.post("/multiple",auth(["teacher"]), createMultipleReadings)
+readingsRouter.post("/multiple",auth(["teacher","sensor"]), createMultipleReadings)
 
 readingsRouter.delete("/:id", auth(["teacher"]),deleteReadingById)
 
@@ -32,6 +32,6 @@ readingsRouter.put("/:id", auth(["teacher"]), patchReadingById)
 
 readingsRouter.patch("/update/many",auth(["teacher"]), patchMultipleReadings)
 
-readingsRouter.patch("/update/precipitation",auth(["teacher","admin"]), updatePrecipitation)
+readingsRouter.patch("/update/precipitation",auth(["teacher"]), updatePrecipitation)
 
 export default readingsRouter

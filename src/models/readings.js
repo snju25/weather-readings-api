@@ -197,7 +197,7 @@ export const findMaxPrecipitation = async (sensorName) => {
 
     // Get the date 5 months ago
     const fiveMonthsAgo = new Date();
-    fiveMonthsAgo.setMonth(fiveMonthsAgo.getMonth() - 5);
+    fiveMonthsAgo.setMonth(fiveMonthsAgo.getMonth() - 5); 
 
     const result = await db.collection("readings").aggregate([
         { 
