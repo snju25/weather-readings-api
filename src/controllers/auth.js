@@ -90,6 +90,9 @@ export const logoutUser = async (req,res)=>{
 export const registerUser = async(req,res) =>{
     const userData = req.body
 
+
+    //------------------------------------------------ validation needed ------------------------//
+
     const userAlreadyExists = await Users.getByEmail(userData.email)
 
     if(userAlreadyExists){

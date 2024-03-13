@@ -84,6 +84,17 @@ export const getReadingsByPage = async(req,res) =>{
  */
 export const createNewReading = async(req,res) =>{
     const readingData = req.body
+
+    console.log(typeof(readingData.latitude))
+    //------------------------------------------------ validation needed ------------------------//
+    if(typeof(readingData.latitude) !== "number"){
+        return res.status(400).json({message: "Latitude must be a number"})
+    }
+    if(typeof(readingData.device_name) !== "string"){
+        return res.status(400).json({message: "Device name must be a string"})
+    }
+
+
     const currentTime = new Date();
 
     const authenticationKey = req.get("X-AUTH-KEY")
@@ -130,6 +141,9 @@ export const createNewReading = async(req,res) =>{
 
 export const createMultipleReadings = async (req, res) => {
     const readingsData = req.body;
+
+
+    //------------------------------------------------ validation needed ------------------------//
 
     const authenticationKey = req.get("X-AUTH-KEY")
     const currentUser = await Users.getByAuthenticationKey(authenticationKey)
@@ -196,6 +210,8 @@ export const patchReadingById = async (req, res) => {
     const readingId = req.params.id;
     const updateFields = req.body;
 
+    //------------------------------------------------ validation needed ------------------------//
+
     const authenticationKey = req.get("X-AUTH-KEY")
     const currentUser = await Users.getByAuthenticationKey(authenticationKey)
 
@@ -237,7 +253,10 @@ export const patchReadingById = async (req, res) => {
  * @param {*} res 
  */
 export const patchMultipleReadings = async (req, res) => {
-    const updates = req.body; // Assume the request body contains an array of updates
+    const updates = req.body; 
+
+
+    //------------------------------------------------ validation needed ------------------------//
 
     const authenticationKey = req.get("X-AUTH-KEY")
     const currentUser = await Users.getByAuthenticationKey(authenticationKey)
@@ -323,7 +342,7 @@ export const deleteReadingById = async (req,res) =>{
  * @returns 
  */
 export const deleteMultipleReadingsById = async (req, res) => {
-    const readingIDs = req.body.ids; // Assume the request body contains an array of IDs
+    const readingIDs = req.body.ids; // the request body contains an array of IDs
 
     const authenticationKey = req.get("X-AUTH-KEY");
     const currentUser = await Users.getByAuthenticationKey(authenticationKey);
@@ -487,6 +506,9 @@ export const findMaxTemperature = async(req,res) =>{
 
 export const updatePrecipitation = async(req,res)=>{
     const {id, newPrecipitation } = req.body
+
+
+    //------------------------------------------------ validation needed ------------------------//
   
     const authenticationKey = req.get("X-AUTH-KEY");
     const currentUser = await Users.getByAuthenticationKey(authenticationKey);

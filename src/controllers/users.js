@@ -5,9 +5,13 @@ import bcrypt from "bcryptjs";
 export const createUser = async (req, res) => {
   const userData = req.body;
 
+  
+    //------------------------------------------------ validation needed ------------------------//
+
   // check if user with that email already exits
 
   const userAlreadyExists = await Users.getByEmail(userData.email);
+
   if (userAlreadyExists) {
     res.status(409).json({
       status: 409,
