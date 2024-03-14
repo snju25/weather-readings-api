@@ -2,6 +2,7 @@ import express from "express"
 import readingsRouter from "./routes/readings.js"
 import usersRouter from "./routes/users.js"
 import authRouter from "./routes/auth.js"
+import docs from "./middleware/docs.js"
 
 
 
@@ -19,6 +20,7 @@ app.use(express.json())
 app.use("/api/readings",readingsRouter)
 app.use("/api/users",usersRouter)
 app.use("/api/",authRouter)
+app.use(docs)
 
 
 // handle errors raised by endpoints and respond with JSON error object.

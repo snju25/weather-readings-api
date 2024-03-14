@@ -1,0 +1,45 @@
+components:
+  schemas:
+    WeatherReading:
+      type: object  
+      properties: 
+        #_id: 
+        #   type: string 
+        #  example: "65b99b98c72f93bfa0da83e7"
+        latitude: 
+            type: number 
+            example: "152.77"
+        device_name: 
+            type: string 
+            example: "Woodford_Sensor"
+        precipitation_mm_per_h: 
+            type: number 
+            example: "152.77"
+        time: 
+            type: string
+            format: date-time
+            example: "2021-05-07T01:44:07.000+00:00"
+        longitude: 
+            type: number 
+            example: "152.77"
+        temperature_deg_celsius: 
+            type: number 
+            example: "152.77"
+        atmospheric_pressure_kPa: 
+            type: number 
+            example: "152.77"
+        max_wind_speed_m_per_s: 
+            type: number 
+            example: "152.77"
+        solar_radiation_W_per_m2: 
+            type: number 
+            example: "152.77"
+        vapor_pressure_kPa: 
+            type: number 
+            example: "152.77"
+        humidity: 
+            type: number 
+            example: "152.77"
+        wind_direction_deg: 
+            type: number 
+            example: "152.77"
