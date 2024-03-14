@@ -278,7 +278,7 @@ export const findMaxTemperature = async (startDate, endDate) => {
             },
             {
                 $project: {
-                    _id: 0,
+                    _id: 1,
                     device_name: "$_id",
                     maxTemperature: 1,
                     readingDate: 1

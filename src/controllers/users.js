@@ -26,6 +26,8 @@ export const createUser = async (req, res) => {
   if (!userData.password.startsWith("$2a")) {
     userData.password = bcrypt.hashSync(userData.password);
   }
+
+
   // create a user model from user data
   const user = Users.User(
     null,

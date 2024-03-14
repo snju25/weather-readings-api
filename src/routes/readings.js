@@ -256,7 +256,7 @@ readingsRouter.get("/page/:page",getReadingsByPage)
  *                  schema:
  *                      $ref: "#/components/schemas/WeatherReading"
  *      responses: 
- *          '200':
+ *          '201':
  *              description: "Readings successfully created"
  *              content:
  *                  application/json:
@@ -269,6 +269,21 @@ readingsRouter.get("/page/:page",getReadingsByPage)
  *                                  type: "string"
  *                              readings:
  *                                  $ref: "#/components/schemas/WeatherReading"
+ * 
+ *          '500':
+ *              description: Database error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              status:
+ *                                  type: number
+ *                              message:
+ *                                  type: string
+ *                          example:
+ *                              status: 500
+ *                              message: "error creating readings"
  *                          
  */
 readingsRouter.post("/",auth(["teacher","sensor"]),createNewReading)
