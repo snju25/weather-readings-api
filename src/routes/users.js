@@ -17,7 +17,16 @@ const usersRouter = Router()
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/User'
+ *                      allOf:
+ *                          - $ref: '#/components/schemas/User'
+ *                          - type: object
+ *                            required:
+ *                                - role
+ *                            properties:
+ *                              role:
+ *                                  type: string
+ *                                  example: "teacher"
+ *                          
  *      responses:
  *          '201':
  *              description: User created successfully

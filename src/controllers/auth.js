@@ -90,9 +90,6 @@ export const logoutUser = async (req,res)=>{
 export const registerUser = async(req,res) =>{
     const userData = req.body
 
-
-    //------------------------------------------------ validation needed ------------------------//
-
     const userAlreadyExists = await Users.getByEmail(userData.email)
 
     if(userAlreadyExists){
@@ -119,8 +116,8 @@ export const registerUser = async(req,res) =>{
     )
      // Use the create model function to insert this user into the DB
      Users.create(user).then(_ => {
-        res.status(200).json({
-            status: 200,
+        res.status(201).json({
+            status: 201,
             message: "Registration successful",
             user: user
         })
