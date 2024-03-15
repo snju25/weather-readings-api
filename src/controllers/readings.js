@@ -84,40 +84,6 @@ export const getReadingsByPage = async(req,res) =>{
  */
 export const createNewReading = async(req,res) =>{
     const readingData = req.body
-
-    //------------------------------------------------ validation needed ------------------------//
-    if(typeof(readingData.latitude) !== "number"){
-        return res.status(400).json({message: "Latitude must be a number"})
-    }
-    if(typeof(readingData.device_name) !== "string"){
-        return res.status(400).json({message: "Device name must be a string"})
-    }
-    if(typeof(readingData.precipitation_mm_per_h) !== "number"){
-        return res.status(400).json({message: "precipitation_mm_per_h name must be a number"})
-    }
-    if(typeof(readingData.longitude) !== "number"){
-        return res.status(400).json({message: "longitude name must be a number"})
-    }
-    if(typeof(readingData.temperature_deg_celsius) !== "number"){
-        return res.status(400).json({message: "temperature_deg_celsius name must be a number"})
-    }
-    if(typeof(readingData.max_wind_speed_m_per_s) !== "number"){
-        return res.status(400).json({message: "max_wind_speed_m_per_s name must be a number"})
-    }
-    if(typeof(readingData.solar_radiation_W_per_m2) !== "number"){
-        return res.status(400).json({message: "solar_radiation_W_per_m2 name must be a number"})
-    }
-    if(typeof(readingData.vapor_pressure_kPa) !== "number"){
-        return res.status(400).json({message: "vapor_pressure_kPa name must be a number"})
-    }
-    if(typeof(readingData.humidity) !== "number"){
-        return res.status(400).json({message: "humidity name must be a number"})
-    }
-    if(typeof(readingData.wind_direction_deg) !== "number"){
-        return res.status(400).json({message: "wind_direction_deg name must be a number"})
-    }
-
-
     const currentTime = new Date();
 
     const authenticationKey = req.get("X-AUTH-KEY")
@@ -185,26 +151,6 @@ export const createMultipleReadings = async (req, res) => {
             message: "Invalid input: Expected an array of readings.",
         });
     }
-      // Validate each readingData before processing
-      let validationErrors = [];
-      readingsData.forEach((readingData, index) => {
-          const fields = ['latitude', 'device_name', 'precipitation_mm_per_h', 'longitude', 'temperature_deg_celsius', 'max_wind_speed_m_per_s', 'solar_radiation_W_per_m2', 'vapor_pressure_kPa', 'humidity', 'wind_direction_deg'];
-          fields.forEach(field => {
-              if (typeof readingData[field] !== 'number' && field !== 'device_name') {
-                  validationErrors.push(`Error in reading ${index + 1}: ${field} must be a number.`);
-              } else if (field === 'device_name' && typeof readingData[field] !== 'string') {
-                  validationErrors.push(`Error in reading ${index + 1}: ${field} must be a string.`);
-              }
-          });
-      });
-  
-      if (validationErrors.length > 0) {
-          return res.status(400).json({
-              status: 400,
-              message: "Validation errors",
-              errors: validationErrors,
-          });
-      }
       
     const currentTime = new Date();
 

@@ -2,6 +2,19 @@ components:
   schemas:
     WeatherReading:
       type: object
+      required: 
+        - latitude
+        - device_name
+        - precipitation_mm_per_h
+        #- time
+        - longitude
+        - temperature_deg_celsius
+        - atmospheric_pressure_kPa
+        - max_wind_speed_m_per_s
+        - solar_radiation_W_per_m2
+        - vapor_pressure_kPa
+        - humidity
+        - wind_direction_deg
       properties: 
         #_id: 
         #   type: string 

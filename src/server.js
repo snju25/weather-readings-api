@@ -17,10 +17,10 @@ app.use(express.json())
 
 
 // Routes
+app.use(docs)
 app.use("/api/readings",readingsRouter)
 app.use("/api/users",usersRouter)
 app.use("/api/",authRouter)
-app.use(docs)
 
 
 // handle errors raised by endpoints and respond with JSON error object.

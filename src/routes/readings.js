@@ -288,6 +288,52 @@ readingsRouter.get("/page/:page",getReadingsByPage)
  */
 readingsRouter.post("/",auth(["teacher","sensor"]),createNewReading)
 
+/**
+ * @openapi
+ * /api/readings/multiple:
+ *  post:
+ *      summary: Add multiple new readings
+ *      tags: [Readings]
+ *      security:
+ *          - ApiKey: []
+ *      requestBody: 
+ *          required: true
+ *          content:     
+ *             application/json:
+ *                  schema:
+ *                      type: array
+ *                      items:
+ *                          $ref: "#/components/schemas/WeatherReading"
+ *      responses: 
+ *          '201':
+ *              description: "Readings successfully created"
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              status:
+ *                                  type: "number"
+ *                              message:
+ *                                  type: "string"
+ *                              readings:
+ *                                  type: object
+ * 
+ *          '500':
+ *              description: Database error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              status:
+ *                                  type: number
+ *                              message:
+ *                                  type: string
+ *                          example:
+ *                              status: 500
+ *                              message: "Error creating multiple readings"
+ */
 readingsRouter.post("/multiple",auth(["teacher","sensor"]), createMultipleReadings)
 
 readingsRouter.delete("/:id", auth(["teacher"]),deleteReadingById)
@@ -301,3 +347,5 @@ readingsRouter.patch("/update/many",auth(["teacher"]), patchMultipleReadings)
 readingsRouter.patch("/update/precipitation",auth(["teacher"]), updatePrecipitation)
 
 export default readingsRouter
+
+// fc545c47-6eed-4ba2-9d22-386e626e91bc
