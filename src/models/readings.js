@@ -40,18 +40,18 @@ export const readings = (
     ) => {
         return {
             _id: new ObjectId(_id),
-            latitude: parseInt(latitude),
+            latitude: parseFloat(latitude),
             device_name,
-            precipitation_mm_per_h: parseInt(precipitation_mm_per_h),
+            precipitation_mm_per_h: parseFloat(precipitation_mm_per_h),
             time: new Date(time),
-            longitude: parseInt(longitude),
-            temperature_deg_celsius: parseInt(temperature_deg_celsius),
-            atmospheric_pressure_kPa: parseInt(atmospheric_pressure_kPa),
-            max_wind_speed_m_per_s: parseInt(max_wind_speed_m_per_s),
-            solar_radiation_W_per_m2: parseInt(solar_radiation_W_per_m2),
-            vapor_pressure_kPa: parseInt(vapor_pressure_kPa),
-            humidity: parseInt(humidity),
-            wind_direction_deg: parseInt(wind_direction_deg)
+            longitude: parseFloat(longitude),
+            temperature_deg_celsius: parseFloat(temperature_deg_celsius),
+            atmospheric_pressure_kPa: parseFloat(atmospheric_pressure_kPa),
+            max_wind_speed_m_per_s: parseFloat(max_wind_speed_m_per_s),
+            solar_radiation_W_per_m2: parseFloat(solar_radiation_W_per_m2),
+            vapor_pressure_kPa: parseFloat(vapor_pressure_kPa),
+            humidity: parseFloat(humidity),
+            wind_direction_deg: parseFloat(wind_direction_deg)
             
         }
     }

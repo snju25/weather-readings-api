@@ -58,6 +58,10 @@ const usersRouter = Router()
  *                                  type: string
  *          '400':
  *              $ref: '#/components/responses/400_InvalidRequest'
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
  *              $ref: '#/components/responses/500_DatabaseError'
  */
@@ -110,6 +114,10 @@ usersRouter.post("/",auth(["teacher"]),createUser)
  *                                  type: string
  *          '400':
  *              $ref: '#/components/responses/400_InvalidRequest'
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
  *              $ref: '#/components/responses/500_DatabaseError'
  */
@@ -166,6 +174,10 @@ usersRouter.delete("/:id",auth(["teacher"]),deleteUserById)
  *                                  type: string
  *          '400':
  *              $ref: '#/components/responses/400_InvalidRequest'
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
  *              $ref: '#/components/responses/500_DatabaseError'
  */
@@ -226,6 +238,10 @@ usersRouter.delete("/delete/multipleStudents",auth(["teacher"]),deleteMultipleUs
  *                                  type: string
  *          '400':
  *              $ref: '#/components/responses/400_InvalidRequest'
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
  *              $ref: '#/components/responses/500_DatabaseError'
  */

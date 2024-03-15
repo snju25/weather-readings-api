@@ -412,7 +412,10 @@ readingsRouter.get("/page/:page",getReadingsByPage)
  *                                  type: "string"
  *                              readings:
  *                                  $ref: "#/components/schemas/WeatherReading"
- * 
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
  *              description: Database error
  *              content:
@@ -428,7 +431,7 @@ readingsRouter.get("/page/:page",getReadingsByPage)
  *                              status: 500
  *                              message: "error creating readings"
  *                          
- */
+*/
 readingsRouter.post("/",auth(["teacher","sensor"]),createNewReading)
 
 /**
@@ -461,6 +464,10 @@ readingsRouter.post("/",auth(["teacher","sensor"]),createNewReading)
  *                                  type: "string"
  *                              readings:
  *                                  type: object
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  * 
  *          '500':
  *              description: Database error
@@ -476,7 +483,7 @@ readingsRouter.post("/",auth(["teacher","sensor"]),createNewReading)
  *                          example:
  *                              status: 500
  *                              message: "Error creating multiple readings"
- */
+*/
 readingsRouter.post("/multiple",auth(["teacher","sensor"]), createMultipleReadings)
 
 
@@ -526,10 +533,14 @@ readingsRouter.post("/multiple",auth(["teacher","sensor"]), createMultipleReadin
  *                              message:
  *                                  type: string
  *          '400': 
-*               $ref: '#/components/responses/400_InvalidRequest'
+ *              $ref: '#/components/responses/400_InvalidRequest'
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
  *              $ref: '#/components/responses/500_DatabaseError'
- */
+*/
 readingsRouter.delete("/:id", auth(["teacher"]),deleteReadingById)
 
 /**
@@ -585,9 +596,13 @@ readingsRouter.delete("/:id", auth(["teacher"]),deleteReadingById)
  *                                  type: string
  *          '400': 
  *               $ref: '#/components/responses/400_InvalidRequest'
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
  *              $ref: '#/components/responses/500_DatabaseError'
- */
+*/
 readingsRouter.delete("/delete/multiple", auth(["teacher"]),deleteMultipleReadingsById)
 
 /**
@@ -654,10 +669,14 @@ readingsRouter.delete("/delete/multiple", auth(["teacher"]),deleteMultipleReadin
  *                              message:
  *                                  type: string
  *          '400': 
-*               $ref: '#/components/responses/400_InvalidRequest'
+ *              $ref: '#/components/responses/400_InvalidRequest'
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
  *              $ref: '#/components/responses/500_DatabaseError'
- */
+*/
 readingsRouter.put("/:id", auth(["teacher"]), patchReadingById)
 
 
@@ -731,10 +750,14 @@ readingsRouter.put("/:id", auth(["teacher"]), patchReadingById)
  *                              message:
  *                                  type: string
  *          '400': 
-*               $ref: '#/components/responses/400_InvalidRequest'
+ *              $ref: '#/components/responses/400_InvalidRequest'
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
  *              $ref: '#/components/responses/500_DatabaseError'
- */
+*/
 readingsRouter.patch("/update/many",auth(["teacher"]), patchMultipleReadings)
 
 
@@ -801,6 +824,10 @@ readingsRouter.patch("/update/many",auth(["teacher"]), patchMultipleReadings)
  *                                  type: string
  *          '400': 
  *              $ref: '#/components/responses/400_InvalidRequest'
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
  *              $ref: '#/components/responses/500_DatabaseError'
  */

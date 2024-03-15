@@ -25,7 +25,7 @@ const authRouter = Router()
  *                          email:
  *                              type: string
  *                              format: email
- *                              example: "saanaj@gmail.com"
+ *                              example: "sanjay12@gmail.com"
  *                          password:
  *                              type: string
  *                              example: "1234"

@@ -16,41 +16,51 @@ components:
         - wind_direction_deg
       properties: 
         latitude: 
-            type: number 
+            type: number
+            format: float 
             example: 152.77
         device_name: 
             type: string 
             example: "Woodford_Sensor"
         precipitation_mm_per_h: 
             type: number 
+            format: float  
             example: 152.77
         time: 
             type: string
             format: date-time
-            example: "2021-05-07T01:44:07.000+00:00"
+            #example: "2021-05-07T01:44:07.000+00:00"
         longitude: 
             type: number 
+            format: float  
             example: 152.77
         temperature_deg_celsius: 
             type: number 
+            format: float  
             example: 152.77
         atmospheric_pressure_kPa: 
             type: number 
+            format: float  
             example: 152.77
         max_wind_speed_m_per_s: 
             type: number 
+            format: float  
             example: 152.77
         solar_radiation_W_per_m2: 
             type: number 
+            format: float  
             example: 152.77
         vapor_pressure_kPa: 
             type: number 
+            format: float  
             example: 152.77
         humidity: 
             type: number 
+            format: float  
             example: 152.77
         wind_direction_deg: 
             type: number 
+            format: float  
             example: 152.77
 
     User:
@@ -104,6 +114,32 @@ components:
               message:
                 type: string
                 example: "Invalid Request"
+    401_AuthorizationError:
+      description: Invalid Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 401
+              message:
+                type: string
+                example: "Invalid auth key"
+    403_Forbidden:
+      description: Invalid Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 403
+              message:
+                type: string
+                example: "Not authroised to access this"
     500_DatabaseError:
       description: Database Error
       content:
