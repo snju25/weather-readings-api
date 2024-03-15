@@ -5,21 +5,22 @@ import { ObjectId } from 'mongodb';
 
 
 /**
- * Creates a new readings model object
+ * Creates a new readings model object.
  * 
- * @param {String | ObjectId | null} _id - mongoDB object ID for this readings
- * @param {String | null} device_name 
- * @param {*} precipitation_mm_per_h 
- * @param {*} time 
- * @param {*} longitude 
- * @param {*} temperature_deg_celsius 
- * @param {*} atmospheric_pressure_kPa 
- * @param {*} max_wind_speed_m_per_s 
- * @param {*} solar_radiation_W_per_m2 
- * @param {*} vapor_pressure_kPa 
- * @param {*} humidity 
- * @param {*} wind_direction_deg 
- * @returns 
+ * @param {String | ObjectId | null} _id - MongoDB object ID for this reading.
+ * @param {Number | null} latitude - Latitude of the sensor location.
+ * @param {String | null} device_name - Name of the sensor device.
+ * @param {Number | null} precipitation_mm_per_h - Precipitation in millimeters per hour.
+ * @param {String | null} time - Timestamp of the reading in ISO format.
+ * @param {Number | null} longitude - Longitude of the sensor location.
+ * @param {Number | null} temperature_deg_celsius - Temperature in degrees Celsius.
+ * @param {Number | null} atmospheric_pressure_kPa - Atmospheric pressure in kilopascals.
+ * @param {Number | null} max_wind_speed_m_per_s - Maximum wind speed in meters per second.
+ * @param {Number | null} solar_radiation_W_per_m2 - Solar radiation in watts per square meter.
+ * @param {Number | null} vapor_pressure_kPa - Vapor pressure in kilopascals.
+ * @param {Number | null} humidity - Humidity percentage.
+ * @param {Number | null} wind_direction_deg - Wind direction in degrees.
+ * @returns {Object} - The new readings model object.
  */
 export const readings = (
     _id,
@@ -57,10 +58,12 @@ export const readings = (
 
 
 /**
- * Get all readings
+ * Get all readings.
  * 
- * @returns {Promise<Object[]>} - A promise for the array of all readings objects
- */    
+ * Retrieves all readings from the 'readings' collection in the database.
+ * 
+ * @returns {Promise<Object[]>} - A promise that resolves to an array of readings objects.
+ */   
 export const getAll = async() =>{
     return db.collection('readings').find().toArray()
 }
@@ -134,10 +137,11 @@ export const getById = async(id) =>{
 
 
 /**
- * Updates reading
+ * Update a specific reading in the database.
  * 
- * @param {Object} reading 
- * @returns 
+ * @param {string} id - The ID of the reading to update.
+ * @param {Object} updateFields - An object containing the fields to update.
+ * @returns {Promise<UpdateWriteOpResult>} - A promise that resolves to the result of the update operation.
  */
 export const updateReadings = async (id, updateFields) =>{
     return db.collection("readings").updateOne({_id: new ObjectId(id)}, {$set : updateFields });
@@ -162,10 +166,10 @@ export const updateMultipleReadings = async (updates) => {
 
 
 /**
- * Delete reading by ID
+ * Delete a specific reading from the database by its ID.
  * 
- * @param {string} id 
- * @returns {Promise<DeleteOneResult>}
+ * @param {string} id - The ID of the reading to delete.
+ * @returns {Promise<DeleteResult>} - A promise that resolves to the result of the delete operation.
  */
 export const  deleteByID = async (id) => {
     return db.collection("readings").deleteOne({ _id: new ObjectId(id) })
@@ -176,7 +180,7 @@ export const  deleteByID = async (id) => {
  * Delete multiple readings by their IDs
  * 
  * @param {string[]} ids - Array of reading IDs
- * @returns {Promise<DeleteResult>}
+ * @returns {Promise<DeleteResult>} - A promise that resolves to the result of the delete operation.
  */
 export const deleteManyByID = async (ids) => {
     const objectIds = ids.map(id => new ObjectId(id)); // Convert each id to an ObjectId
@@ -293,7 +297,13 @@ export const findMaxTemperature = async (startDate, endDate) => {
 };
 
 // to update the precipitation value of a specific document
-
+/**
+ * Update the precipitation value of a specific reading in the database.
+ * 
+ * @param {string} id - The ID of the reading to update.
+ * @param {number} newPrecipitation - The new precipitation value in millimeters per hour.
+ * @returns {Promise<UpdateWriteOpResult>} - A promise that resolves to the result of the update operation.
+ */
 export const updatePrecipitation = async(id,NewPrecipitation) =>{
     return db.collection("readings").updateOne({_id: new ObjectId(id)},{$set : {precipitation_mm_per_h: NewPrecipitation}})
 }
