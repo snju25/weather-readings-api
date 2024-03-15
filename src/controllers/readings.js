@@ -202,7 +202,40 @@ export const patchReadingById = async (req, res) => {
     const readingId = req.params.id;
     const updateFields = req.body;
 
-    //------------------------------------------------ validation needed ------------------------//
+     // List of allowed field names for the Readings collection
+     const allowedFields = [
+        'device_name',
+        'latitude',
+        'longitude',
+        'precipitation_mm_per_h',
+        'temperature_deg_celsius',
+        'atmospheric_pressure_kPa',
+        'max_wind_speed_m_per_s',
+        'solar_radiation_W_per_m2',
+        'vapor_pressure_kPa',
+        'humidity',
+        'wind_direction_deg',
+        // Add any other allowed fields here
+    ];
+       // Validate the readingID is a valid 24 character hex string
+       if (!ObjectId.isValid(readingId)) {
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid reading ID format.",
+        });
+    }
+
+    // Check if all fields in updateFields are allowed
+    const invalidFields = Object.keys(updateFields).filter(field => !allowedFields.includes(field));
+    if (invalidFields.length > 0) {
+        return res.status(400).json({
+            status: 400,
+            message: `Invalid field(s) in request body: ${invalidFields.join(', ')}`,
+        });
+    }
+    
+  
+
     
     const authenticationKey = req.get("X-AUTH-KEY")
     const currentUser = await Users.getByAuthenticationKey(authenticationKey)
@@ -212,13 +245,6 @@ export const patchReadingById = async (req, res) => {
             status: 403,
             message: "Access Forbidden",
         }); 
-    }
-       // Validate the readingID is a valid 24 character hex string
-       if (!ObjectId.isValid(readingId)) {
-        return res.status(400).json({
-            status: 400,
-            message: "Invalid reading ID format.",
-        });
     }
 
 
@@ -256,7 +282,39 @@ export const patchMultipleReadings = async (req, res) => {
     const updates = req.body; 
 
 
-    //------------------------------------------------ validation needed ------------------------//
+      // List of allowed field names for the Readings collection
+      const allowedFields = [
+        'latitude',
+        'longitude',
+        'device_name',
+        'precipitation_mm_per_h',
+        'temperature_deg_celsius',
+        'atmospheric_pressure_kPa',
+        'max_wind_speed_m_per_s',
+        'solar_radiation_W_per_m2',
+        'vapor_pressure_kPa',
+        'humidity',
+        'wind_direction_deg',
+        // Add other allowed fields here
+    ];
+     // Validate each readingID is a valid 24 character hex string
+     if (!updates.every(id => ObjectId.isValid(id))) {
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid reading ID format.",
+        });
+    }
+
+    // Validate the fields in each update object
+    for (const update of updates) {
+        const invalidFields = Object.keys(update.fields).filter(field => !allowedFields.includes(field));
+        if (invalidFields.length > 0) {
+            return res.status(400).json({
+                status: 400,
+                message: `Invalid field(s) in request body: ${invalidFields.join(', ')}`,
+            });
+        }
+    } 
 
     const authenticationKey = req.get("X-AUTH-KEY")
     const currentUser = await Users.getByAuthenticationKey(authenticationKey)
@@ -509,7 +567,13 @@ export const updatePrecipitation = async(req,res)=>{
 
 
     //------------------------------------------------ validation needed ------------------------//
-  
+       // Validate the readingID is a valid 24 character hex string
+       if (!ObjectId.isValid(id)) {
+        return res.status(400).json({
+            status: 400,
+            message: "Invalid reading ID format.",
+        });
+    }
     const authenticationKey = req.get("X-AUTH-KEY");
     const currentUser = await Users.getByAuthenticationKey(authenticationKey);
   
@@ -531,7 +595,8 @@ export const updatePrecipitation = async(req,res)=>{
     const result = await Readings.updatePrecipitation(id,newPrecipitation)
     res.status(200).json({
         status: 200,
-        message: "Updated precipitation"
+        message: "Updated precipitation",
+        result
     })
   
   

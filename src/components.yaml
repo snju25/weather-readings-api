@@ -57,6 +57,8 @@ components:
             type: number 
             example: "152.77"
 
+  newUser:
+  
   responses:
       200_UserObject:
         description: Successful response with user object

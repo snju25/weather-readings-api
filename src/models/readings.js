@@ -180,7 +180,6 @@ export const  deleteByID = async (id) => {
  */
 export const deleteManyByID = async (ids) => {
     const objectIds = ids.map(id => new ObjectId(id)); // Convert each id to an ObjectId
-    console.log(objectIds)
     return db.collection("readings").deleteMany({ _id: { $in: objectIds } });
 };
 
