@@ -163,7 +163,15 @@ export const getAll = async() => {
 
 // Delete multiple users that have the ‘Student’ role and last logged in between two given dates: 
     // Allow Administrators to remove a range of created user accounts based on a date range. 
-
+/**
+ * Delete multiple users with the 'Student' role who last logged in between two given dates.
+ * This function is intended to be used by Administrators to remove a range of created user accounts based on a date range.
+ * 
+ * @param {string} rawStartDate - The start date of the range in a format that can be parsed by the Date constructor.
+ * @param {string} rawEndDate - The end date of the range in a format that can be parsed by the Date constructor.
+ * @returns {Promise<DeleteResult>} - A promise that resolves to the result of the delete operation.
+ * @throws {Error} - If no students are found within the given date range.
+ */
 export const deleteUserWithinRange = async (rawStartDate, rawEndDate) => {
     const startDate = new Date(rawStartDate);
     const endDate = new Date(rawEndDate);
@@ -192,6 +200,16 @@ export const deleteUserWithinRange = async (rawStartDate, rawEndDate) => {
     
     //Update access level for at least two users in the same query, based on a date range in which the users were created: 
     //To Allow Administrators to upgrade or downgrade multiple users that were created in batches (upgrading or downgrading an entire group of students) 
+/**
+ * Update the role of multiple users who were created within a specified date range.
+ * This function allows Administrators to upgrade or downgrade multiple users that were created in batches,
+ * such as upgrading or downgrading an entire group of students.
+ * 
+ * @param {string} startDate - The start date of the range for user creation in ISO format (inclusive).
+ * @param {string} endDate - The end date of the range for user creation in ISO format (exclusive).
+ * @param {string} newRole - The new role to assign to the selected users.
+ * @returns {Promise<UpdateResult>} - A promise that resolves to the result of the update operation.
+ */    
 export const changeUserRoles = async(startDate, endDate, newRole) =>{
     const accounts = await db.collection("users").find(
         {
@@ -206,9 +224,6 @@ export const changeUserRoles = async(startDate, endDate, newRole) =>{
         }
         
         ).toArray();
-
-
-
 
     const result = await db.collection("users").updateMany({_id:{ $in: accounts.map(account => account._id) }}, {$set: {role: newRole}})
     return result
