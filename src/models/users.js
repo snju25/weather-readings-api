@@ -171,8 +171,9 @@ export const deleteUserWithinRange = async (rawStartDate, rawEndDate) => {
     // Retrieve students who logged in within the given date range
     const students = await db.collection("users").find({
         lastSession: { $gte: startDate, $lte: endDate },
-        role: { $regex: new RegExp("^student$", "i") } // Case-insensitive match for 'student'
+        role: "student"
     }, { _id: 1 }).toArray();
+    console.log(students)
 
     if (students.length > 0) {
         const result = await db.collection("users").deleteMany({

@@ -6,7 +6,6 @@ components:
         - latitude
         - device_name
         - precipitation_mm_per_h
-        #- time
         - longitude
         - temperature_deg_celsius
         - atmospheric_pressure_kPa
@@ -16,91 +15,105 @@ components:
         - humidity
         - wind_direction_deg
       properties: 
-        #_id: 
-        #   type: string 
-        #  example: "65b99b98c72f93bfa0da83e7"
         latitude: 
             type: number 
-            example: "152.77"
+            example: 152.77
         device_name: 
             type: string 
             example: "Woodford_Sensor"
         precipitation_mm_per_h: 
             type: number 
-            example: "152.77"
+            example: 152.77
         time: 
             type: string
             format: date-time
             example: "2021-05-07T01:44:07.000+00:00"
         longitude: 
             type: number 
-            example: "152.77"
+            example: 152.77
         temperature_deg_celsius: 
             type: number 
-            example: "152.77"
+            example: 152.77
         atmospheric_pressure_kPa: 
             type: number 
-            example: "152.77"
+            example: 152.77
         max_wind_speed_m_per_s: 
             type: number 
-            example: "152.77"
+            example: 152.77
         solar_radiation_W_per_m2: 
             type: number 
-            example: "152.77"
+            example: 152.77
         vapor_pressure_kPa: 
             type: number 
-            example: "152.77"
+            example: 152.77
         humidity: 
             type: number 
-            example: "152.77"
+            example: 152.77
         wind_direction_deg: 
             type: number 
-            example: "152.77"
+            example: 152.77
 
-  newUser:
-  
+    User:
+      type: object
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+      properties:
+        email:
+          type: string
+          format: email
+          example: "admin@srv.com"
+        password:
+          type: string
+          example: "1234"
+        firstName: 
+          type: string
+          example: "admin"
+        lastName: 
+          type: string
+          example: "admin"
+
   responses:
-      200_UserObject:
-        description: Successful response with user object
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                status:
-                  type: integer
-                  example: 200
-                message:
-                  type: string
-                  example: "Successful response with user object"
-                #user:
-                  # $ref: "#/components/schemas/User"
-      400_InvalidRequest:
-        description: Invalid Request
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                status:
-                  type: integer
-                  example: 400
-                message:
-                  type: string
-                  example: "Invalid Request"
-      500_DatabaseError:
-        description: Database Error
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                status:
-                  type: integer
-                  example: 500
-                message:
-                  type: string
-                  example: "Error processing request"
-
-
-
+    200_UserObject:
+      description: Successful response with user object
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: "Successful response with user object"
+              #user:
+                # $ref: "#/components/schemas/User"
+    400_InvalidRequest:
+      description: Invalid Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: "Invalid Request"
+    500_DatabaseError:
+      description: Database Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              message:
+                type: string
+                example: "Error processing request"
