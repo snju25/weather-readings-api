@@ -349,7 +349,7 @@ readingsRouter.get("/temperature/max/range", findMaxTemperature)
  *                description: Page Number
  *                required: true
  *                schema:
- *                  type: number
+ *                  type: string
  *          responses: 
  *              '200':
  *                  description: "Response Object with readings array"
@@ -368,6 +368,9 @@ readingsRouter.get("/temperature/max/range", findMaxTemperature)
  *                                      type: array
  *                                      items: 
  *                                         $ref: "#/components/schemas/WeatherReading"
+ *              '400':
+ *                  $ref: '#/components/responses/400_InvalidRequest'
+ *                  
  *              '404':
  *                  description: "No results found"
  *                  content:

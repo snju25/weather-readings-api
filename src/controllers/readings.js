@@ -57,8 +57,18 @@ export const getReadingsById = async (req,res) =>{
  * @param {*} res 
  */
 export const getReadingsByPage = async(req,res) =>{
+    const pageNumber = req.params.page
+
     const pageSize = 5;
     const page = parseInt(req.params.page)
+    
+    // Validate if the page parameter is an integer
+    const isValidPage = Number.isInteger(page)
+    if (!isValidPage) {
+        return res.status(400).json({ 
+            status: 400,
+            message: "The page parameter is not an integer" })
+    }
     
     const readings = await Readings.getByPage(page,pageSize)
     if(readings.length === 0){
