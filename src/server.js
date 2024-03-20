@@ -3,14 +3,47 @@ import readingsRouter from "./routes/readings.js"
 import usersRouter from "./routes/users.js"
 import authRouter from "./routes/auth.js"
 import docs from "./middleware/docs.js"
+import cors from "cors"
 
+// fetch("http://localhost:8000/api/readings/65f3ece6b4a57334944c1498",{
+//     method: "GET",
+//     headers: {
+//         "Content-Type": "application/json"
+//     }
+// }).then(res => res.json()).then(data => console.log(data)) 
 
+// fetch("http://localhost:8000/api/readings/",{
+//     method: "POST",
+//     headers: {
+//         "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify({})
+// }).then(res => res.json()).then(data => console.log(data)) 
+
+// fetch("http://localhost:8000/api/readings/65f3ece6b4a57334944c1498",{
+//     method: "PUT",
+//     headers: {
+//         "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify({})
+// }).then(res => res.json()).then(data => console.log(data)) 
+
+// fetch("http://localhost:8000/api/readings/65f3ece6b4a57334944c1498",{
+//     method: "DELETE",
+//     headers: {
+//         "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify({})
+// }).then(res => res.json()).then(data => console.log(data)) 
 
 // Express application instance
 const app = express();
 const port = 8000;
 
 // CORS middleware
+app.use(cors({
+    origin: ["https://www.wikipedia.org","http://localhost:8000"]
+}))
 
 // Parse JSON request body 
 app.use(express.json())

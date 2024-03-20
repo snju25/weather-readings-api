@@ -102,7 +102,7 @@ readingsRouter.get("/:id",getReadingsById)
 
 /**
  * @openapi
- * /api/readings//max_precipitation/{device_name}:
+ * /api/readings/max_precipitation/{device_name}:
  *      get:
  *          summary: "Get max_precipitation of a specific device in last 5 months"
  *          tags: [Readings]
@@ -784,6 +784,7 @@ readingsRouter.patch("/update/many",auth(["teacher"]), patchMultipleReadings)
  *                      properties:
  *                          id:
  *                              type: string
+ *                              example: "65f3ece6b4a57334944c149c"
  *                              description: ID of the reading to be updated
  *                          newPrecipitation:
  *                              type: number
