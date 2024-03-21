@@ -18,6 +18,8 @@ const readingsRouter = Router()
  *      get:
  *          summary: "Get readings by ID "
  *          tags: [Readings]
+ *          security:
+ *              - ApiKey: []
  *          parameters: 
  *              - name: id 
  *                in: path
@@ -84,6 +86,8 @@ const readingsRouter = Router()
  *                                              wind_direction_deg: 
  *                                                  type: number 
  *                                                  example: "152.77"
+ *              '403':
+ *                  $ref: '#/components/responses/403_Forbidden'
  *              '404':
  *                  description: "No results found"
  *                  content:
@@ -98,7 +102,7 @@ const readingsRouter = Router()
  *                                      type: string
  *                                      example: "no readings found by this ID"
 */
-readingsRouter.get("/:id",getReadingsById)
+readingsRouter.get("/:id",auth(["teacher","student"]),getReadingsById)
 
 /**
  * @openapi
@@ -106,6 +110,8 @@ readingsRouter.get("/:id",getReadingsById)
  *      get:
  *          summary: "Get max_precipitation of a specific device in last 5 months"
  *          tags: [Readings]
+ *          security:
+ *              - ApiKey: []
  *          parameters: 
  *              - name: device_name
  *                in: path
@@ -186,7 +192,7 @@ readingsRouter.get("/:id",getReadingsById)
  *                                      type: string
  *                                      example: "no readings found on this page"
 */
-readingsRouter.get("/max_precipitation/:device_name", maxPrecipitation)
+readingsRouter.get("/max_precipitation/:device_name",auth(["teacher","student"]), maxPrecipitation)
 
 
 /**
@@ -195,6 +201,8 @@ readingsRouter.get("/max_precipitation/:device_name", maxPrecipitation)
  *  get:
  *      summary: Get TARP readings for a specific device and date
  *      tags: [Readings]
+ *      security:
+ *          - ApiKey: []
  *      parameters:
  *        - in: path
  *          name: device_name
@@ -269,7 +277,7 @@ readingsRouter.get("/max_precipitation/:device_name", maxPrecipitation)
  *                              message:
  *                                  type: string
  */
-readingsRouter.get("/TARP/:device_name/:date", findTARP)
+readingsRouter.get("/TARP/:device_name/:date",auth(["teacher","student"]), findTARP)
 
 /**
  * @openapi
@@ -277,6 +285,8 @@ readingsRouter.get("/TARP/:device_name/:date", findTARP)
  *  get:
  *      summary: Get the maximum temperature readings within a date range
  *      tags: [Readings]
+ *      security:
+ *          - ApiKey: []
  *      parameters:
  *        - in: query
  *          name: startDate
@@ -335,7 +345,7 @@ readingsRouter.get("/TARP/:device_name/:date", findTARP)
  *          '500':
  *              $ref: '#/components/responses/500_DatabaseError'
  */
-readingsRouter.get("/temperature/max/range", findMaxTemperature)
+readingsRouter.get("/temperature/max/range",auth(["teacher","student"]), findMaxTemperature)
 
 /**
  * @openapi
@@ -343,6 +353,8 @@ readingsRouter.get("/temperature/max/range", findMaxTemperature)
  *      get:
  *          summary: "Get 5 readings from page number "
  *          tags: [Readings]
+ *          security:
+ *              - ApiKey: []
  *          parameters: 
  *              - name: page 
  *                in: path
@@ -385,7 +397,7 @@ readingsRouter.get("/temperature/max/range", findMaxTemperature)
  *                                      type: string
  *                                      example: "no readings found on this page"
 */
-readingsRouter.get("/page/:page",getReadingsByPage)
+readingsRouter.get("/page/:page",auth(["teacher","student"]),getReadingsByPage)
 
 /**
  * @openapi

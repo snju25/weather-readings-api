@@ -30,6 +30,8 @@ export const getAllReadings = async(req,res) =>{
  */
 export const getReadingsById = async (req,res) =>{
     const readingID = req.params.id
+    // const authenticationKey = req.get("X-AUTH_KEY")
+
     try{
         const reading = await Readings.getById(readingID)
         res.status(200).json({
