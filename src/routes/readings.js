@@ -5,12 +5,6 @@ import auth from "../middleware/auth.js"
 
 const readingsRouter = Router()
 
-// TODO: Docs
-// TODO: Auth middleware
-
-
-// readingsRouter.get("/",getAllReadings)
-
 
 /**
  * @openapi
@@ -86,8 +80,14 @@ const readingsRouter = Router()
  *                                              wind_direction_deg: 
  *                                                  type: number 
  *                                                  example: "152.77"
+ *              '400': 
+ *                  $ref: '#/components/responses/400_InvalidRequest'
+ *              '401':
+ *                  $ref: '#/components/responses/401_AuthorizationError'
  *              '403':
  *                  $ref: '#/components/responses/403_Forbidden'
+ *              '500':
+ *                  $ref: '#/components/responses/500_DatabaseError'
  *              '404':
  *                  description: "No results found"
  *                  content:
@@ -191,6 +191,14 @@ readingsRouter.get("/:id",auth(["teacher","student"]),getReadingsById)
  *                                  message: 
  *                                      type: string
  *                                      example: "no readings found on this page"
+ *              '400': 
+ *                  $ref: '#/components/responses/400_InvalidRequest'
+ *              '401':
+ *                  $ref: '#/components/responses/401_AuthorizationError'
+ *              '403':
+ *               $ref: '#/components/responses/403_Forbidden'
+ *              '500':
+ *                  $ref: '#/components/responses/500_DatabaseError'
 */
 readingsRouter.get("/max_precipitation/:device_name",auth(["teacher","student"]), maxPrecipitation)
 
@@ -243,17 +251,7 @@ readingsRouter.get("/max_precipitation/:device_name",auth(["teacher","student"])
  *                              precipitation_mm_per_h:
  *                                  type: number
  *                                  example: 152
- *          '400':
- *              description: Invalid input parameters
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              status:
- *                                  type: number
- *                              message:
- *                                  type: string
+ * 
  *          '404':
  *              description: No readings found for the specified device and date
  *              content:
@@ -265,17 +263,14 @@ readingsRouter.get("/max_precipitation/:device_name",auth(["teacher","student"])
  *                                  type: number
  *                              message:
  *                                  type: string
+ *          '400': 
+ *              $ref: '#/components/responses/400_InvalidRequest'
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
- *              description: Server error
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              status:
- *                                  type: number
- *                              message:
- *                                  type: string
+ *              $ref: '#/components/responses/500_DatabaseError'
  */
 readingsRouter.get("/TARP/:device_name/:date",auth(["teacher","student"]), findTARP)
 
@@ -342,6 +337,10 @@ readingsRouter.get("/TARP/:device_name/:date",auth(["teacher","student"]), findT
  *                                  type: number
  *                              message:
  *                                  type: string
+ *          '401':
+ *              $ref: '#/components/responses/401_AuthorizationError'
+ *          '403':
+ *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
  *              $ref: '#/components/responses/500_DatabaseError'
  */
@@ -380,8 +379,14 @@ readingsRouter.get("/temperature/max/range",auth(["teacher","student"]), findMax
  *                                      type: array
  *                                      items: 
  *                                         $ref: "#/components/schemas/WeatherReading"
- *              '400':
+ *              '400': 
  *                  $ref: '#/components/responses/400_InvalidRequest'
+ *              '401':
+ *                  $ref: '#/components/responses/401_AuthorizationError'
+ *              '403':
+ *                  $ref: '#/components/responses/403_Forbidden'
+ *              '500':
+ *                  $ref: '#/components/responses/500_DatabaseError'
  *                  
  *              '404':
  *                  description: "No results found"
@@ -427,24 +432,14 @@ readingsRouter.get("/page/:page",auth(["teacher","student"]),getReadingsByPage)
  *                                  type: "string"
  *                              readings:
  *                                  $ref: "#/components/schemas/WeatherReading"
+ *          '400': 
+ *              $ref: '#/components/responses/400_InvalidRequest'
  *          '401':
  *              $ref: '#/components/responses/401_AuthorizationError'
  *          '403':
  *              $ref: '#/components/responses/403_Forbidden'
  *          '500':
- *              description: Database error
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              status:
- *                                  type: number
- *                              message:
- *                                  type: string
- *                          example:
- *                              status: 500
- *                              message: "error creating readings"
+ *              $ref: '#/components/responses/500_DatabaseError'
  *                          
 */
 readingsRouter.post("/",auth(["teacher","sensor"]),createNewReading)
@@ -479,25 +474,14 @@ readingsRouter.post("/",auth(["teacher","sensor"]),createNewReading)
  *                                  type: "string"
  *                              readings:
  *                                  type: object
+ *          '400': 
+ *              $ref: '#/components/responses/400_InvalidRequest'
  *          '401':
  *              $ref: '#/components/responses/401_AuthorizationError'
  *          '403':
  *              $ref: '#/components/responses/403_Forbidden'
- * 
  *          '500':
- *              description: Database error
- *              content:
- *                  application/json:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              status:
- *                                  type: number
- *                              message:
- *                                  type: string
- *                          example:
- *                              status: 500
- *                              message: "Error creating multiple readings"
+ *              $ref: '#/components/responses/500_DatabaseError'
 */
 readingsRouter.post("/multiple",auth(["teacher","sensor"]), createMultipleReadings)
 
