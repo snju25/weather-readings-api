@@ -4,7 +4,6 @@ import swaggerUi from "swagger-ui-express"
 import * as OpenApiValidator from "express-openapi-validator"
 
 const docs = Router()
-console.log("asd")
 
 const options = {
     failOnErrors: true,

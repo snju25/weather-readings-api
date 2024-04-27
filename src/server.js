@@ -42,7 +42,7 @@ const port = 8000;
 
 // CORS middleware
 app.use(cors({
-    origin: ["https://www.wikipedia.org","http://localhost:8000"]
+    origin: true
 }))
 
 // Parse JSON request body 
